@@ -10,31 +10,50 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-      # used to cache dependencies with a timeout
+    # 1. Install all system dependencies required for python-for-android / Buildozer
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libffi-dev install-info git zip unzip ocaml-nox \
+        ccache automake autoconf libtool pkg-config zlib1g-dev libasound2-dev libssl-dev \
+        cmake ant openssh-client libncurses5-dev libtinfo-dev libgmp-dev lld
+
+    # 2. Set up the Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    # 3. Create a clean date stamp for the cache key
     - name: Get Date
       id: get-date
       run: |
         echo "date=$(date -u +'%Y%m%d')" >> $GITHUB_OUTPUT
       shell: bash
 
+    # 4. Cache Buildozer global downloads
     - name: Cache Buildozer global directory
       uses: actions/cache@v4
       with:
         path: .buildozer_global
         key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
+    # 5. Cache project-specific build targets
     - name: Cache Buildozer local directory
       uses: actions/cache@v4
       with:
         path: .buildozer
         key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
+    # 6. Run the build (Added vital ID tag here so the next step can read its file output!)
     - name: Build with Buildozer
+      id: buildozer
       uses: ArtenSBulgakov/buildozer-action@v1
       with:
         command: buildozer android debug
         buildozer_version: master
 
+    # 7. Upload the compiled APK artifact
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
