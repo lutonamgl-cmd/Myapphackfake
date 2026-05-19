@@ -6,10 +6,10 @@
 [app]
 
 # (str) Title of your application
-title = hack.exe
+title = 9coolkid
 
 # (str) Package name
-package.name = myapp
+package.name = hackersim
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = com.hack.exe
@@ -18,7 +18,7 @@ package.domain = com.hack.exe
 source.dir = .
 
 # (list) Source files to include (leave empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,gif	
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -42,17 +42,17 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,os,random
+requirements = python3,kivy,sqlite3
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/.gif
+presplash.filename = %(source.dir)s/loading.gif
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/
+icon.filename = %(source.dir)s/logo.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse, landscape-reverse, or all
@@ -495,3 +495,4 @@ warn_on_root = 1
 #        buildozer --profile demo android debug
 #
 #   Environment variable overrides have priority over profile overrides.
+
